@@ -1,0 +1,51 @@
+Search Notes:
+
+ILIKE 'stardust%'
+ILIKE 'stardust_%'
+
+http://en.wikipedia.org/wiki/Regex
+Regex Match: ~
+! not matching
+* case insensitive
+
+WHERE title !~* '^the.*';
+
+levenshtein
+SELECT levenshtein('bat', 'fads');
+
+trigram
+show_trgm('Avatar');
+...WHERE title % 'Avatre';
+
+TSVector and TSQuery
+WHERE title @@ 'night & day';
+WHERE to_tsvector(title) @@ to_tsquery('english', 'night & day');
+
+metaphone
+WHERE metaphone(name, 6) = metaphone('Broos Wils', 6);
+
+
+combine
+“Get me names that sound the most like Robin Williams, in order.”
+SELECT * FROM actors
+WHERE metaphone(name,8) % metaphone('Robin Williams',8)
+ORDER BY levenshtein(lower('Robin Williams'), lower(name));
+
+
+
+
+
+
+
+SELECT m.movie_id, m.title, cube_distance(m.genre, s.genre) dist
+FROM movies m, (SELECT genre, title FROM movies WHERE title = 'Mad Max') s
+WHERE cube_enlarge(s.genre, 5, 18) @> m.genre AND s.title <> m.title
+ORDER BY dist
+LIMIT 5;
+
+SELECT m.*
+FROM movies m NATURAL JOIN movies_actors NATURAL JOIN actors
+WHERE metaphone(name, 6) = metaphone('Broos Wils', 6)
+LIMIT 5;
+
+

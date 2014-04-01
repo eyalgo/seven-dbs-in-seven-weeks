@@ -1,0 +1,15 @@
+
+1.
+# link from polly to the image
+curl -X PUT http://localhost:10018/riak/animals/polly -H "Link: </riak/photos/polly.jpg>; riaktag=\"photo-of\"" -H "Content-Type: application/json" -d '{"nickname" : "Sweet Polly Purebred", "breed" : "Purebred"}'
+
+#Check it
+curl -v http://127.0.0.1:10018/riak/animals/polly
+
+2.
+
+curl -X PUT http://localhost:10018/riak/documents/eyal_golan_cv.pdf -H "Content-type:  application/pdf" --data-binary @Eyal_Golan_CV.pdf
+
+
+3.
+curl -X PUT http://localhost:10018/riak/medicines/antibiotics.jpg -H "Content-type: image/jpeg" -H "Link: </riak/animals/ace>; riaktag=\"antibiotics\"" --data-binary @antibiotics.jpg

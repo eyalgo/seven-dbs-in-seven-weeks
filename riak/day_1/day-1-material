@@ -1,3 +1,6 @@
+for node in `ls`; do $node/bin/riak start; done
+
+
  curl -v -X PUT http://localhost:10018/riak/favs/db -H "Content-Type: text/html" -d "<html><body><h1>My new favorite DB is RIAK</h1></body></html>"
 
 http://localhost:10018/riak/favs/db

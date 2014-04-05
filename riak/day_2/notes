@@ -1,0 +1,6 @@
+sudo yum install ruby-devel
+gem install rubygems-update
+update_rubygems
+gem install riak-client jso
+
+curl -v http://127.0.0.1:10018/buckets/rooms/props

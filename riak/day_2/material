@@ -21,4 +21,18 @@ function(v) {var parsed_data = JSON.parse(v.values[0].data);var data = {};data[p
 # Filters
 {"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 1000]]},"query":[{"map":{"language":"javascript","bucket":"my_functions","key":"map_capacity"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var style in v[i]) {if( totals[style] ) totals[style] += v[i][style];else totals[style] = v[i][style];}}return [totals];}"}}]}
 
+# link walking on cages
+{"inputs":{"bucket":"cages","key_filters":[["eq", "2"]]},"query":[{"link":{"bucket":"animals","keep":false}},{"map":{"language":"javascript","source":"function(v) { return [v]; }"}}]}
+
+
+####
+# configuration and replica
+curl -X PUT http://localhost:10018/riak/animals -H "Content-Type: application/json" -d '{"props":{"n_val":4}}'
+
+curl -X PUT http://localhost:10048/riak/animals/jean?w=0 -H "Content-Type: application/json" -d '{"nickname" : "Jean", "breed" : "Border Collie"}'
+
+
+curl -X PUT http://localhost:10018/riak/animals -H "Content-Type: application/json" -d '{"props":{"dw":"one"}}'
+
+
 

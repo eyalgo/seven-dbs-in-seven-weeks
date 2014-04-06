@@ -1,2 +1,5 @@
 # Riak’s built-in functions
 https://github.com/basho/riak_kv/blob/master/priv/mapred_builtins.js
+
+http://wiki.basho.com/MapReduce.html
+http://docs.basho.com/riak/1.1.4/cookbooks/Key-Filters/

@@ -1,0 +1,18 @@
+curl -X POST -H "content-type:application/json" http://localhost:10018/mapred --data @- 
+
+# Write map and reduce functions against the rooms bucket to find the total guest capacity per floor.
+
+# testing floor 1
+{"inputs":[["rooms","101"],["rooms","102"],["rooms","103"],["rooms","154"]],"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}
+# all floors
+{"inputs":"rooms","query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}
+
+
+# with filter floors 42 and 43
+// TODO check what's going on only with map (key = room number, value = floor)
+{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 101]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = key_int/100;var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}
+
+["string_to_int"], ["between", 1, 100]
+
+{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 1000]]},"query":[{"map":{"language":"javascript","bucket":"my_functions","key":"map_capacity"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var style in v[i]) {if( totals[style] ) totals[style] += v[i][style];else totals[style] = v[i][style];}}return [totals];}"}}]}
+["string_to_int"], ["or", [["between", 1, 100]], [["between", 101, 200]]]

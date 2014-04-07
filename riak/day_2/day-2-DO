@@ -1,4 +1,13 @@
-curl -X POST -H "content-type:application/json" http://localhost:10018/mapred --data @- 
+curl -X POST -H "content-type:application/json" http://localhost:10018/mapred --data @-
+
+# first check mapping
+{"inputs":[["rooms","101"],["rooms","202"],["rooms","603"],["rooms","854"]],"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[key_int] = room_floor;return [data];}"}}]}
+{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["between", 4200, 4299]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[key_int] = room_floor;return [data];}"}}]}
+
+{"inputs":{"bucket":"rooms","key_filters":[["or", [["string_to_int"], ["between", 4200, 4299]], [["string_to_int"], ["between", 4300, 4399]]]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[key_int] = room_floor;return [data];}"}}]}
+
+[["or", [["string_to_int"], ["between", 4200, 4299]], [["string_to_int"], ["between", 4300, 4399]]]]
+
 
 # Write map and reduce functions against the rooms bucket to find the total guest capacity per floor.
 
@@ -9,10 +18,7 @@ curl -X POST -H "content-type:application/json" http://localhost:10018/mapred --
 
 
 # with filter floors 42 and 43
-// TODO check what's going on only with map (key = room number, value = floor)
-{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 101]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = key_int/100;var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}
+{"inputs":{"bucket":"rooms","key_filters":[["or", [["string_to_int"], ["between", 4200, 4299]], [["string_to_int"], ["between", 4300, 4399]]]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}
 
-["string_to_int"], ["between", 1, 100]
-
-{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 1000]]},"query":[{"map":{"language":"javascript","bucket":"my_functions","key":"map_capacity"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var style in v[i]) {if( totals[style] ) totals[style] += v[i][style];else totals[style] = v[i][style];}}return [totals];}"}}]}
-["string_to_int"], ["or", [["between", 1, 100]], [["between", 101, 200]]]
+# testing with less_than
+{"inputs":{"bucket":"rooms","key_filters":[["string_to_int"], ["less_than", 1000]]},"query":[{"map":{"language":"javascript","source":"function(v) {var parsed_data = JSON.parse(v.values[0].data);var key_int = v.key;var room_floor = Math.floor(key_int/100);var data = {};data[\"Floor \" + room_floor] = parsed_data.capacity;return [data];}"}},{"reduce":{"language":"javascript","source":"function(v) {var totals = {};for (var i in v) {for(var room_floor in v[i]) {if( totals[room_floor] ) totals[room_floor] += v[i][room_floor];else totals[room_floor] = v[i][room_floor];}}return [totals];}"}}]}

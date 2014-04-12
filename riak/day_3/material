@@ -1,0 +1,57 @@
+curl    -X PUT http://localhost:10018/riak/animals         -H "Content-Type: application/json" -d '{"props":{"allow_mult":true}}'
+
+curl -i -X PUT http://localhost:10018/riak/animals/bruiser2 -H "X-Riak-ClientId: bob" -H "Content-Type: application/json" -H "X-Riak-ClientId: bob" -d '{"score" : 3}'
+
+
+curl -i -X PUT http://localhost:10018/riak/animals/newdog -H "Content-Type: application/json" -d '{"score" : 3}'
+curl http://localhost:10018/riak/animals/bruiser
+
+curl -i http://localhost:10018/riak/animals/bruiser2
+
+curl -i -X PUT http://localhost:10018/riak/animals/bruiser2 -H "X-Riak-ClientId: jane"  -H "X-Riak-Vclock: a85hYGBgzGDKBVIcR4M2cgdb/tfMYEpkzGNlkO3YfoYvCwA=" -H "Content-Type: application/json" -d '{"score" : 2}'
+
+curl -i -X PUT http://localhost:10018/riak/animals/bruiser2 -H "X-Riak-ClientId: rakshith"  -H "X-Riak-Vclock: a85hYGBgzGDKBVIcR4M2cgdb/tfMYEpkzGNlkO3YfoYvCwA=" -H "Content-Type: application/json" -d '{"score" : 4}'
+
+
+curl -i http://localhost:10018/riak/animals/bruiser?return_body=true -H "Accept: multipart/mixed"
+
+
+curl -i http://localhost:10018/riak/animals/bruiser2?vtag=23V5f9c7a0BHao7dqGjqlp
+curl -i http://localhost:10018/riak/animals/bruiser2?vtag=4C02JJEFeb6gS5XcCfVUb4
+
+
+curl -i -X PUT http://localhost:10018/riak/animals/bruiser2?return_body=true -H "X-Riak-ClientId: jane" -H "X-Riak-Vclock: a85hYGBgzGDKBVIcR4M2cgdb/tfMYEpkzmNlONW5/QxfFgA=" -H "Content-Type: application/json" -d '{"score" : 3}'
+
+curl -i http://localhost:10018/riak/animals/bruiser2?return_body=true
+
+
+# fix : http://blog.sacaluta.com/2012/07/riak-precommit-hook-example.html
+# pre / post commit
+curl -i -X PUT http://localhost:10018/riak/animals -H "content-type: application/json" -d '{"props":{"precommit":[{"name":"good_score","language":"javascript"}]}}'
+curl -X PUT http://localhost:10018/riak/animals -H "content-type:application/json" -d '{"props":{"precommit":[{"name" : "good_score"}]}}'
+
+
+curl -i -X PUT http://localhost:10018/riak/animals/bruiser -H "Content-Type: application/json" -d '{"score" : 5}'
+
+# search
+curl -X PUT http://localhost:10018/riak/animals -H "Content-Type: application/json" -d '{"props":{"precommit": [{"mod": "riak_search_kv_hook","fun":"precommit"}]}}'
+ 
+curl -X PUT http://localhost:10018/riak/animals/dragon -H "Content-Type: application/json" -d '{"nickname" : "Dragon", "breed" : "Briard", "score" : 1 }'
+
+curl -X PUT http://localhost:10018/riak/animals/ace -H "Content-Type: application/json" -d '{"nickname" : "The Wonder Dog", "breed" : "German Shepherd", "score" : 3 }'
+
+curl -X PUT http://localhost:10018/riak/animals/rtt -H "Content-Type: application/json" -d '{"nickname" : "Rin Tin Tin", "breed" : "German Shepherd", "score" : 4 }'
+
+
+# need the ' surounding the URL
+
+curl 'http://localhost:10018/solr/animals/select?wt=json&q=breed:Shepherd'
+
+curl 'http://localhost:10018/solr/animals/select?wt=json&q=nickname:rin%20breed:Shepherd&q.op=and'
+
+
+# Inverted Index
+curl -X PUT http://localhost:10018/riak/animals/blue -H "x-riak-index-mascot_bin: butler" -H "x-riak-index-version_int: 2" -d '{"nickname" : "Blue II", "breed" : "English Bulldog"}'
+curl 'http://localhost:10018/riak/animals/index/mascot_bin/butler'
+
+

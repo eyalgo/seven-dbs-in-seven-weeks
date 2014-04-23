@@ -1,0 +1,16 @@
+# install tutorial
+http://tutorialforlinux.com/2014/03/18/how-to-getting-started-with-apache-hbase-on-fedora-19-20-21-3264bit-linux-easy-guide/
+
+# links and shortcuts
+# need to do it differently
+# sudo ln -sf /opt/hbase/hbase-0.94.18 /opt/hbase-latest
+# sudo ln -s /opt/hbase-latest/bin/start-hbase.sh /usr/local/bin/hbase-start
+# sudo ln -s /opt/hbase-latest/bin/stop-hbase.sh /usr/local/bin/hbase-stop
+# sudo ln -s /opt/hbase-latest/bin/hbase /usr/local/bin/hbase 
+
+# running a jruby script
+# The script is in current diretory
+/opt/hbase-latest/bin/hbase org.jruby.Main put_multiple_columns.rb
+
+# Had to modify the script, based on:
+# http://forums.pragprog.com/forums/202/topics/11494

@@ -51,7 +51,9 @@ curl 'http://localhost:10018/solr/animals/select?wt=json&q=nickname:rin%20breed:
 
 
 # Inverted Index
+# http://docs.basho.com/riak/latest/dev/using/2i/
 curl -X PUT http://localhost:10018/riak/animals/blue -H "x-riak-index-mascot_bin: butler" -H "x-riak-index-version_int: 2" -d '{"nickname" : "Blue II", "breed" : "English Bulldog"}'
-curl 'http://localhost:10018/riak/animals/index/mascot_bin/butler'
+curl http://localhost:10018/riak/animals/index/mascot_bin/butler
+curl http://localhost:10018/buckets/animals/index/mascot_bin/butler
 
 

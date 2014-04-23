@@ -1,0 +1,20 @@
+# shell command link
+http://learnhbase.wordpress.com/2013/03/02/hbase-shell-commands/
+
+# Another helpful link
+http://akbarahmed.com/2012/08/13/hbase-command-line-tutorial/
+
+# HBase Shell
+http://hbase.apache.org/shell.html
+
+# create a test row:
+put 'wiki', 'Home2', 'text:', 'new text'
+put 'wiki', 'Home2', 'revision:author', 'eyal'
+get 'wiki', 'Home2'
+
+# delete individual column from row
+delete 'wiki','Home2','revision:author'
+
+# delete entire row, use deleteall 't1','r1'
+deleteall 'wiki','Home2'
+

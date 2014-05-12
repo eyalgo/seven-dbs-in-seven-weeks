@@ -1,0 +1,28 @@
+<Food_Display_Row>
+  <Food_Code>12350000</Food_Code>
+  <Display_Name>Sour cream dip</Display_Name>
+  <Portion_Default>1.00000</Portion_Default>
+  <Portion_Amount>.25000</Portion_Amount>
+  <Portion_Display_Name>cup </Portion_Display_Name>
+  <Factor>.25000</Factor>
+  <Increment>.25000</Increment>
+  <Multiplier>1.00000</Multiplier>
+  <Grains>.04799</Grains>
+  <Whole_Grains>.00000</Whole_Grains>
+  <Vegetables>.04070</Vegetables>
+  <Orange_Vegetables>.00000</Orange_Vegetables>
+  <Drkgreen_Vegetables>.00000</Drkgreen_Vegetables>
+  <Starchy_vegetables>.00000</Starchy_vegetables>
+  <Other_Vegetables>.04070</Other_Vegetables>
+  <Fruits>.00000</Fruits>
+  <Milk>.00000</Milk>
+  <Meats>.00000</Meats>
+  <Soy>.00000</Soy>
+  <Drybeans_Peas>.00000</Drybeans_Peas>
+  <Oils>.00000</Oils>
+  <Solid_Fats>105.64850</Solid_Fats>
+  <Added_Sugars>1.57001</Added_Sugars>
+  <Alcohol>.00000</Alcohol>
+  <Calories>133.65000</Calories>
+  <Saturated_Fats>7.36898</Saturated_Fats>
+</Food_Display_Row>

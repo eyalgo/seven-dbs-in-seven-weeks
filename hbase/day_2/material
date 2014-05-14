@@ -1,4 +1,5 @@
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2 | bzcat | /opt/hbase/hbase-0.94.18/bin/hbase shell import_from_wikipedia.rb
+curl http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-pages-articles.xml.bz2 | bzcat | /opt/hbase/hbase-0.94.18/bin/hbase shell import_from_wikipedia.rb
 
 create 'links', {NAME => 'to', VERSIONS => 1, BLOOMFILTER => 'ROWCOL'},{NAME => 'from', VERSIONS => 1, BLOOMFILTER => 'ROWCOL'}
 
